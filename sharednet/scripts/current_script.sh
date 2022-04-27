@@ -6,8 +6,8 @@
 #SBATCH --mem-per-gpu=90G
 #SBATCH -e results/logs/slurm-%j.err
 #SBATCH -o results/logs/slurm-%j.out
-#SBATCH --mail-type=end
-#SBATCH --mail-user=jiajingnan2222@gmail.com
+##SBATCH --mail-type=end
+##SBATCH --mail-user=jiajingnan2222@gmail.com
 
 
 eval "$(conda shell.bash hook)"
@@ -21,8 +21,8 @@ echo job_id is $job_id
 # git will not detect the current file because this file may be changed when this job was run
 scontrol write batch_script ${job_id} ${slurm_dir}/slurm-${job_id}_args.sh
 
-# quote ENDSSH to make sure echo $jobs is not empty
-# https://stackoverflow.com/questions/34567748/bash-variable-is-always-empty
+# Passing shell variables to ssh
+# https://stackoverflow.com/questions/15838927/passing-shell-variables-to-ssh
 # The following code will ssh to loginnode and git commit to synchronize commits from different nodes.
 
 # But sleep some time is required otherwise multiple commits by several experiments at the same time
@@ -61,7 +61,7 @@ ENDSSH
 echo "Hello, I am back in $(hostname) to run the code"
 
 # shellcheck disable=SC2046
-idx=0; export CUDA_VISIBLE_DEVICES=$idx; stdbuf -oL python -u run.py 2>${slurm_dir}/slurm-${job_id}_${idx}_err.txt 1>${slurm_dir}/slurm-${job_id}_${idx}_out.txt --outfile=${slurm_dir}/slurm-${job_id}_$idx --hostname="$(hostname)" --jobid=${job_id} --model_names="liver" --cond_flag=False --cond_pos='enc_dec' --mode='train' --infer_ID=0 --remark="pancreas"
+idx=0; export CUDA_VISIBLE_DEVICES=$idx; stdbuf -oL python -u run.py 2>${slurm_dir}/slurm-${job_id}_${idx}_err.txt 1>${slurm_dir}/slurm-${job_id}_${idx}_out.txt --outfile=${slurm_dir}/slurm-${job_id}_$idx --hostname="$(hostname)" --jobid=${job_id} --model_names="liver" --cond_flag=False --cond_pos='enc_dec' --mode='train' --infer_ID=0 --remark="liver"
 
 
 
