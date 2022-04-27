@@ -1,0 +1,8 @@
+docs/
+sharednet/scripts/results/
+sharednet/scripts/mlruns/
+sharednet/results_archive/
+sharednet/modules/__pycache__/
+*.pyc
+.neptune/
+.idea
